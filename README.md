@@ -310,7 +310,7 @@ curl -X GET "http://127.0.0.1:8000/api/files/e6a2185c1387/measurements/"
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/manasagururaj/geospatial-measurement-api.git
+   git clone https://github.com/Manasamalli06/geospatial-measurement-api.git
    cd geospatial-measurement-api
    ```
 
@@ -422,5 +422,5 @@ The service includes a built-in web dashboard at `http://127.0.0.1:8000`:
 ---
 
 ## 👤 Author
-- **Repository**: [https://github.com/manasagururaj/geospatial-measurement-api](https://github.com/manasagururaj/geospatial-measurement-api)
+- **Repository**: [https://github.com/Manasamalli06/geospatial-measurement-api](https://github.com/Manasamalli06/geospatial-measurement-api)
 - **License**: MIT
