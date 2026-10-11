@@ -224,3 +224,70 @@ async def health_check():
         version=settings.APP_VERSION,
         supported_formats=["Shapefile (.zip)", "KML (.kml)"],
     )
+
+
+@router.get(
+    "/samples/{filename}",
+    summary="Download a sample geospatial file",
+    description="Provides direct download of ready-to-test geospatial sample files: survey.kml, parcels.zip, or routes.zip.",
+)
+async def download_sample(filename: str):
+    from fastapi.responses import FileResponse
+    samples_dir = Path(__file__).resolve().parent.parent.parent / "tests" / "sample_data"
+    file_path = samples_dir / filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail=f"Sample file '{filename}' not found.")
+    
+    media_type = "application/zip" if filename.endswith(".zip") else "application/vnd.google-earth.kml+xml"
+    return FileResponse(
+        str(file_path),
+        media_type=media_type,
+        filename=filename,
+    )
+
+
+@router.post(
+    "/samples/{filename}/test",
+    response_model=FileUploadResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="One-click load and test a sample file",
+    description="Loads one of the pre-built sample files (survey.kml, parcels.zip, routes.zip) directly into the processing engine without needing manual upload.",
+)
+async def load_sample_file(filename: str):
+    samples_dir = Path(__file__).resolve().parent.parent.parent / "tests" / "sample_data"
+    source_path = samples_dir / filename
+    if not source_path.exists():
+        raise HTTPException(status_code=404, detail=f"Sample file '{filename}' not found.")
+
+    file_id = storage_manager.generate_id()
+    saved_filename = f"{file_id}_{filename}"
+    saved_path = settings.UPLOADS_DIR / saved_filename
+    shutil.copy2(source_path, saved_path)
+    file_size = saved_path.stat().st_size
+
+    features, crs_str, file_type, summary = GeospatialParserService.process_file(
+        saved_path, original_filename=filename
+    )
+
+    record = storage_manager.save_record(
+        file_id=file_id,
+        filename=filename,
+        file_path=saved_path,
+        file_type=file_type,
+        file_size_bytes=file_size,
+        feature_count=len(features),
+        crs=crs_str,
+        status=FileProcessingStatus.COMPLETED,
+        summary=summary,
+        features=features,
+    )
+
+    return FileUploadResponse(
+        id=record.file_id,
+        filename=record.filename,
+        feature_count=record.feature_count,
+        crs=record.crs,
+        status=record.status,
+        message="Sample loaded and processed successfully",
+    )
+

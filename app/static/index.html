@@ -468,6 +468,47 @@
           </button>
         </div>
         <div id="statusAlert" class="status-alert"></div>
+
+        <!-- Sample files quick action section -->
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--card-border);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+            🧪 One-Click Test Sample Files
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
+              <div>
+                <strong style="font-size: 0.82rem;">survey.kml</strong>
+                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Polygon, LineString, Point (Bangalore, WGS84)</span>
+              </div>
+              <div style="display: flex; gap: 0.4rem;">
+                <button class="btn-link" onclick="testSample('survey.kml')" style="cursor: pointer;">⚡ Test Now</button>
+                <a href="/api/samples/survey.kml" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
+              <div>
+                <strong style="font-size: 0.82rem;">parcels.zip</strong>
+                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Shapefile: 3 Area Parcels (New York, WGS84)</span>
+              </div>
+              <div style="display: flex; gap: 0.4rem;">
+                <button class="btn-link" onclick="testSample('parcels.zip')" style="cursor: pointer;">⚡ Test Now</button>
+                <a href="/api/samples/parcels.zip" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
+              <div>
+                <strong style="font-size: 0.82rem;">routes.zip</strong>
+                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Shapefile: 3 Highway LineStrings (New York, WGS84)</span>
+              </div>
+              <div style="display: flex; gap: 0.4rem;">
+                <button class="btn-link" onclick="testSample('routes.zip')" style="cursor: pointer;">⚡ Test Now</button>
+                <a href="/api/samples/routes.zip" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Quick Details Card -->
@@ -618,6 +659,30 @@
         uploadBtnText.textContent = 'Upload & Process';
       }
     });
+
+    async function testSample(filename) {
+      statusAlert.style.display = 'block';
+      statusAlert.className = 'status-alert';
+      statusAlert.innerHTML = `<span class="spinner"></span> Loading and processing ${filename}...`;
+
+      try {
+        const res = await fetch(`/api/samples/${filename}/test`, { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Failed to process sample');
+
+        statusAlert.className = 'status-alert success';
+        statusAlert.textContent = `✓ Sample '${filename}' processed! File ID: ${data.id} • ${data.feature_count} features.`;
+
+        const measRes = await fetch(`/api/files/${data.id}/measurements/`);
+        const measData = await measRes.json();
+        latestMeasurements = measData;
+        renderResults(measData);
+
+      } catch (err) {
+        statusAlert.className = 'status-alert error';
+        statusAlert.textContent = `✗ Error: ${err.message}`;
+      }
+    }
 
     function renderResults(data) {
       resultsSection.style.display = 'block';
