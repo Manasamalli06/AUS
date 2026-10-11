@@ -417,6 +417,124 @@
       border: 1px solid #ef4444;
       color: #fca5a5;
     }
+
+    /* Modal Backdrop & Container */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      padding: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--text);
+    }
+
+    .tab-header {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.5rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.55rem;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.65rem 0.9rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .btn-full {
+      width: 100%;
+      justify-content: center;
+      margin-top: 1.25rem;
+    }
   </style>
 </head>
 <body>
@@ -431,11 +549,62 @@
         </div>
       </div>
       <div class="nav-links">
+        <div id="authNav" style="display: flex; gap: 0.5rem; align-items: center;">
+          <button class="btn-link" onclick="openAuthModal('login')" style="cursor: pointer; background: rgba(56, 189, 248, 0.1); border-color: var(--accent); color: var(--accent);">🔑 Sign In</button>
+          <button class="btn-link" onclick="openAuthModal('register')" style="cursor: pointer;">✨ Register</button>
+        </div>
         <a href="/docs" target="_blank" class="btn-link">⚡ Swagger UI</a>
         <a href="/redoc" target="_blank" class="btn-link">📖 ReDoc</a>
-        <a href="https://github.com" target="_blank" class="btn-link">⭐ GitHub</a>
+        <a href="https://github.com/Manasamalli06/geospatial-measurement-api" target="_blank" class="btn-link">⭐ GitHub</a>
       </div>
     </header>
+
+    <!-- Authentication Modal (Login & Register) -->
+    <div class="modal-backdrop" id="authModal">
+      <div class="modal">
+        <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+        <div class="tab-header">
+          <button class="tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">Sign In</button>
+          <button class="tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">Create Account</button>
+        </div>
+
+        <div id="authAlert" class="status-alert" style="margin-bottom: 1rem;"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label class="form-label" for="loginUser">Username or Email</label>
+            <input type="text" id="loginUser" class="form-input" placeholder="e.g. surveyor_john or john@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="loginPass">Password</label>
+            <input type="password" id="loginPass" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-full" id="loginSubmitBtn">Sign In</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="regName">Full Name</label>
+            <input type="text" id="regName" class="form-input" placeholder="e.g. John Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regUser">Username</label>
+            <input type="text" id="regUser" class="form-input" placeholder="e.g. surveyor_john" minlength="3" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Email Address</label>
+            <input type="email" id="regEmail" class="form-input" placeholder="john@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPass">Password (min 6 characters)</label>
+            <input type="password" id="regPass" class="form-input" placeholder="••••••••" minlength="6" required>
+          </div>
+          <button type="submit" class="btn btn-full" id="regSubmitBtn">Create Account</button>
+        </form>
+      </div>
+    </div>
 
     <div class="hero-banner">
       <h2>Transform Coordinates &amp; Measure Features</h2>
@@ -754,6 +923,158 @@
         setTimeout(() => copyJsonBtn.textContent = '📋 Copy JSON', 2000);
       }
     });
+
+    // --- Authentication Logic ---
+    const authModal = document.getElementById('authModal');
+    const authAlert = document.getElementById('authAlert');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const tabLoginBtn = document.getElementById('tabLoginBtn');
+    const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+    const authNav = document.getElementById('authNav');
+
+    function openAuthModal(tab = 'login') {
+      authModal.classList.add('open');
+      authAlert.style.display = 'none';
+      switchAuthTab(tab);
+    }
+
+    function closeAuthModal() {
+      authModal.classList.remove('open');
+    }
+
+    function switchAuthTab(tab) {
+      authAlert.style.display = 'none';
+      if (tab === 'login') {
+        tabLoginBtn.classList.add('active');
+        tabRegisterBtn.classList.remove('active');
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+      } else {
+        tabLoginBtn.classList.remove('active');
+        tabRegisterBtn.classList.add('active');
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('loginSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Signing In...';
+      authAlert.style.display = 'none';
+
+      const username_or_email = document.getElementById('loginUser').value.trim();
+      const password = document.getElementById('loginPass').value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username_or_email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Login failed');
+
+        localStorage.setItem('auth_token', data.access_token);
+        localStorage.setItem('auth_user', JSON.stringify(data.user));
+
+        authAlert.className = 'status-alert success';
+        authAlert.textContent = `✓ Welcome back, ${data.user.username}!`;
+        setTimeout(() => {
+          closeAuthModal();
+          updateAuthUI();
+        }, 800);
+
+      } catch (err) {
+        authAlert.className = 'status-alert error';
+        authAlert.textContent = `✗ ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign In';
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('regSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Creating Account...';
+      authAlert.style.display = 'none';
+
+      const full_name = document.getElementById('regName').value.trim();
+      const username = document.getElementById('regUser').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPass').value;
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password, full_name })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Registration failed');
+
+        localStorage.setItem('auth_token', data.access_token);
+        localStorage.setItem('auth_user', JSON.stringify(data.user));
+
+        authAlert.className = 'status-alert success';
+        authAlert.textContent = `✓ Account created successfully! Welcome, ${data.user.username}.`;
+        setTimeout(() => {
+          closeAuthModal();
+          updateAuthUI();
+        }, 800);
+
+      } catch (err) {
+        authAlert.className = 'status-alert error';
+        authAlert.textContent = `✗ ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+      updateAuthUI();
+    }
+
+    function updateAuthUI() {
+      const token = localStorage.getItem('auth_token');
+      const userStr = localStorage.getItem('auth_user');
+
+      if (token && userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          authNav.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.35rem 0.85rem; border-radius: 10px; font-size: 0.82rem;">
+              <span>👤 <strong>${user.username}</strong></span>
+              <button onclick="handleLogout()" style="background: transparent; border: none; color: #f87171; font-weight: 700; cursor: pointer; margin-left: 0.25rem;">Sign Out</button>
+            </div>
+          `;
+          return;
+        } catch (_) {}
+      }
+
+      authNav.innerHTML = `
+        <button class="btn-link" onclick="openAuthModal('login')" style="cursor: pointer; background: rgba(56, 189, 248, 0.1); border-color: var(--accent); color: var(--accent);">🔑 Sign In</button>
+        <button class="btn-link" onclick="openAuthModal('register')" style="cursor: pointer;">✨ Register</button>
+      `;
+    }
+
+    // Close modal on escape or background click
+    authModal.addEventListener('click', (e) => {
+      if (e.target === authModal) closeAuthModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && authModal.classList.contains('open')) closeAuthModal();
+    });
+
+    // Check user auth on load
+    updateAuthUI();
   </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from app.api.auth_routes import auth_router
 from app.api.routes import router as api_router
 from app.core.config import settings
 from app.core.exceptions import GeospatialAPIException
@@ -43,6 +44,7 @@ async def geospatial_exception_handler(request: Request, exc: GeospatialAPIExcep
 
 
 # Include API routes
+app.include_router(auth_router)
 app.include_router(api_router)
 
 # Mount static files and serve index.html at root

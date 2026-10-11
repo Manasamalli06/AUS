@@ -114,3 +114,31 @@ class HealthResponse(BaseModel):
     status: str = "healthy"
     version: str
     supported_formats: list[str] = ["Shapefile (.zip)", "KML (.kml)"]
+
+
+class UserRegisterRequest(BaseModel):
+    username: str = Field(..., min_length=3, max_length=50, description="Unique username")
+    email: str = Field(..., description="Valid email address")
+    password: str = Field(..., min_length=6, description="Password (min 6 characters)")
+    full_name: Optional[str] = Field(None, description="Full name or display name")
+
+
+class UserLoginRequest(BaseModel):
+    username_or_email: str = Field(..., description="Username or registered email")
+    password: str = Field(..., description="User password")
+
+
+class UserResponse(BaseModel):
+    id: str
+    username: str
+    email: str
+    full_name: Optional[str] = None
+    created_at: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
+    message: str = "Authentication successful"
+
