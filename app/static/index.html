@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geospatial File Measurement API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --purple: #a855f7;
+      --amber: #f59e0b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --code-bg: #030712;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e293b 0%, var(--bg) 60%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .brand h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-link {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .hero-banner {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.3) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      background: var(--accent-glow);
+      filter: blur(80px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-banner h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-banner p {
+      color: var(--text-muted);
+      max-width: 800px;
+      font-size: 0.95rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Drop Zone */
+    .drop-zone {
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.05);
+      box-shadow: 0 0 25px var(--accent-glow);
+    }
+
+    .drop-zone-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .drop-zone h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .drop-zone p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #030712;
+      font-weight: 700;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px var(--accent-glow);
+      transition: all 0.2s ease;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--accent-glow);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Quick Info Badge */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+    }
+
+    .badge.active {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Stat Cards */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: left;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+    }
+
+    .stat-sub {
+      font-size: 0.75rem;
+      color: var(--emerald);
+      margin-top: 0.2rem;
+    }
+
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      margin-top: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--card-border);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .geom-pill {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+
+    .geom-polygon {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .geom-linestring {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .geom-point {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .code-preview {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      max-height: 250px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .status-alert {
+      padding: 0.85rem 1.25rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    .status-alert.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--emerald);
+      color: #6ee7b7;
+    }
+
+    .status-alert.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">🌐</div>
+        <div>
+          <h1>Geospatial File Measurement API</h1>
+          <p style="font-size: 0.75rem; color: var(--text-muted);">FastAPI • Reprojection Engine • Metric Measurements</p>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="/docs" target="_blank" class="btn-link">⚡ Swagger UI</a>
+        <a href="/redoc" target="_blank" class="btn-link">📖 ReDoc</a>
+        <a href="https://github.com" target="_blank" class="btn-link">⭐ GitHub</a>
+      </div>
+    </header>
+
+    <div class="hero-banner">
+      <h2>Transform Coordinates &amp; Measure Features</h2>
+      <p>
+        Upload any ESRI Shapefile (zipped) or Google Earth KML file. The engine identifies feature types, automatically reprojects geographic coordinates (EPSG:4326 degrees) to optimal local UTM metric projections, and calculates precise Areas (m² / hectares / km²) and Lengths (m / km).
+      </p>
+      <div class="badges">
+        <span class="badge active">✓ Auto UTM CRS Reprojection</span>
+        <span class="badge active">✓ Polygon Area (m² &amp; ha)</span>
+        <span class="badge active">✓ LineString Length (m &amp; km)</span>
+        <span class="badge active">✓ Point Graceful Handling</span>
+        <span class="badge active">✓ Shapefile .zip &amp; KML</span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Upload Card -->
+      <div class="card">
+        <div class="card-title">📤 Upload Geospatial File</div>
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-zone-icon">📁</div>
+          <h3>Drag &amp; drop Shapefile (.zip) or KML (.kml)</h3>
+          <p>or click to browse from your device</p>
+          <input type="file" id="fileInput" class="file-input" accept=".zip,.kml">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+          <span id="selectedFileName" style="font-size: 0.85rem; color: var(--text-muted);">No file selected</span>
+          <button class="btn" id="uploadBtn" disabled>
+            <span id="uploadBtnText">Upload &amp; Process</span>
+          </button>
+        </div>
+        <div id="statusAlert" class="status-alert"></div>
+      </div>
+
+      <!-- Quick Details Card -->
+      <div class="card">
+        <div class="card-title">ℹ️ File &amp; Projection Summary</div>
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-label">Features</div>
+            <div class="stat-val" id="statFeatures">-</div>
+            <div class="stat-sub" id="statType">-</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Source CRS</div>
+            <div class="stat-val" id="statCrs">-</div>
+            <div class="stat-sub" id="statStatus">-</div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-label">Total Area</div>
+            <div class="stat-val" id="statArea">-</div>
+            <div class="stat-sub" id="statAreaSub">-</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Total Length</div>
+            <div class="stat-val" id="statLength">-</div>
+            <div class="stat-sub" id="statLengthSub">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Measurements Table Card -->
+    <div class="card" id="resultsSection" style="display: none;">
+      <div class="card-title" style="justify-content: space-between;">
+        <span>📐 Feature Measurements</span>
+        <button class="btn-link" id="copyJsonBtn">📋 Copy JSON</button>
+      </div>
+      
+      <div class="table-container">
+        <table id="measurementsTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Geometry</th>
+              <th>Measurement</th>
+              <th>Projected CRS Used</th>
+              <th>Secondary Units</th>
+              <th>Properties</th>
+            </tr>
+          </thead>
+          <tbody id="measurementsBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 1.5rem;">
+        <div class="card-title">🔍 Raw API Response (GET /api/files/{id}/measurements/)</div>
+        <div class="code-preview" id="rawJsonPreview"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const selectedFileName = document.getElementById('selectedFileName');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadBtnText = document.getElementById('uploadBtnText');
+    const statusAlert = document.getElementById('statusAlert');
+    const resultsSection = document.getElementById('resultsSection');
+    const rawJsonPreview = document.getElementById('rawJsonPreview');
+    const measurementsBody = document.getElementById('measurementsBody');
+    const copyJsonBtn = document.getElementById('copyJsonBtn');
+
+    let currentFile = null;
+    let latestMeasurements = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        setFile(e.target.files[0]);
+      }
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        setFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    function setFile(file) {
+      currentFile = file;
+      selectedFileName.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      uploadBtn.disabled = false;
+      statusAlert.style.display = 'none';
+    }
+
+    uploadBtn.addEventListener('click', async () => {
+      if (!currentFile) return;
+
+      uploadBtn.disabled = true;
+      uploadBtnText.innerHTML = '<span class="spinner"></span> Processing...';
+      statusAlert.style.display = 'none';
+
+      const formData = new FormData();
+      formData.append('file', currentFile);
+
+      try {
+        const uploadRes = await fetch('/api/files/', {
+          method: 'POST',
+          body: formData
+        });
+
+        const uploadData = await uploadRes.json();
+
+        if (!uploadRes.ok) {
+          throw new Error(uploadData.detail || 'Upload failed');
+        }
+
+        statusAlert.className = 'status-alert success';
+        statusAlert.textContent = `✓ Uploaded successfully! File ID: ${uploadData.id} • ${uploadData.feature_count} features processed.`;
+
+        // Fetch detailed measurements
+        const measRes = await fetch(`/api/files/${uploadData.id}/measurements/`);
+        const measData = await measRes.json();
+        latestMeasurements = measData;
+
+        renderResults(measData);
+
+      } catch (err) {
+        statusAlert.className = 'status-alert error';
+        statusAlert.textContent = `✗ Error: ${err.message}`;
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtnText.textContent = 'Upload & Process';
+      }
+    });
+
+    function renderResults(data) {
+      resultsSection.style.display = 'block';
+
+      // Update stat cards
+      document.getElementById('statFeatures').textContent = data.feature_count;
+      document.getElementById('statType').textContent = `${data.summary.polygon_count} Polygons, ${data.summary.linestring_count} Lines, ${data.summary.point_count} Points`;
+      document.getElementById('statCrs').textContent = data.crs;
+      document.getElementById('statStatus').textContent = data.status;
+
+      document.getElementById('statArea').textContent = data.summary.total_area_sq_meters > 0 
+        ? `${data.summary.total_area_sq_meters.toLocaleString()} m²` 
+        : '-';
+      document.getElementById('statAreaSub').textContent = data.summary.total_area_hectares > 0 
+        ? `${data.summary.total_area_hectares} hectares` 
+        : '0 ha';
+
+      document.getElementById('statLength').textContent = data.summary.total_length_meters > 0 
+        ? `${data.summary.total_length_meters.toLocaleString()} m` 
+        : '-';
+      document.getElementById('statLengthSub').textContent = data.summary.total_length_km > 0 
+        ? `${data.summary.total_length_km} km` 
+        : '0 km';
+
+      // Render table
+      measurementsBody.innerHTML = '';
+      data.measurements.forEach((item) => {
+        const tr = document.createElement('tr');
+
+        let pillClass = 'geom-point';
+        if (item.geometry_type.includes('Polygon')) pillClass = 'geom-polygon';
+        if (item.geometry_type.includes('Line')) pillClass = 'geom-linestring';
+
+        let measHtml = '-';
+        let secondUnits = '-';
+        if (item.measurement && item.measurement.value !== null) {
+          measHtml = `<strong>${item.measurement.formatted || item.measurement.value + ' ' + item.measurement.unit}</strong>`;
+          if (item.measurement.additional_units) {
+            secondUnits = Object.entries(item.measurement.additional_units)
+              .map(([k, v]) => `<code>${k}: ${v}</code>`)
+              .join(' ');
+          }
+        } else if (item.measurement && item.measurement.note) {
+          measHtml = `<span style="color: var(--text-muted); font-size: 0.75rem;">${item.measurement.note}</span>`;
+        }
+
+        const propsStr = Object.keys(item.properties).length > 0 
+          ? Object.entries(item.properties).slice(0, 3).map(([k, v]) => `${k}=${v}`).join(', ')
+          : '(none)';
+
+        tr.innerHTML = `
+          <td><code>${item.feature_id}</code></td>
+          <td><span class="geom-pill ${pillClass}">${item.geometry_type}</span></td>
+          <td>${measHtml}</td>
+          <td><span style="font-size: 0.75rem; color: var(--accent); font-family: 'JetBrains Mono';">${item.measurement?.projected_crs || 'N/A'}</span></td>
+          <td><span style="font-size: 0.75rem;">${secondUnits}</span></td>
+          <td style="color: var(--text-muted); font-size: 0.75rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${propsStr}</td>
+        `;
+        measurementsBody.appendChild(tr);
+      });
+
+      rawJsonPreview.textContent = JSON.stringify(data, null, 2);
+    }
+
+    copyJsonBtn.addEventListener('click', () => {
+      if (latestMeasurements) {
+        navigator.clipboard.writeText(JSON.stringify(latestMeasurements, null, 2));
+        copyJsonBtn.textContent = '✓ Copied!';
+        setTimeout(() => copyJsonBtn.textContent = '📋 Copy JSON', 2000);
+      }
+    });
+  </script>
+</body>
+</html>

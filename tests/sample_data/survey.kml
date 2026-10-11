@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Survey Area Sample</name>
+    <description>Sample geospatial survey containing Polygons, LineStrings, and Points.</description>
+    
+    <!-- Polygon: Farm Parcel (around Bangalore, India: 12.97 N, 77.59 E) -->
+    <Placemark>
+      <name>Agricultural Field 101</name>
+      <description>Rice cultivation parcel</description>
+      <Polygon>
+        <extrude>1</extrude>
+        <altitudeMode>clampToGround</altitudeMode>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>
+              77.5900,12.9700,0
+              77.5950,12.9700,0
+              77.5950,12.9750,0
+              77.5900,12.9750,0
+              77.5900,12.9700,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+
+    <!-- LineString: Access Road (around Bangalore) -->
+    <Placemark>
+      <name>Survey Access Road</name>
+      <description>Secondary access corridor</description>
+      <LineString>
+        <extrude>1</extrude>
+        <tessellate>1</tessellate>
+        <coordinates>
+          77.5900,12.9700,0
+          77.5925,12.9725,0
+          77.5960,12.9730,0
+          77.6000,12.9750,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+    <!-- Point: Monitoring Station (around Bangalore) -->
+    <Placemark>
+      <name>Station Alpha</name>
+      <description>Weather and IoT monitoring beacon</description>
+      <Point>
+        <coordinates>77.5930,12.9720,0</coordinates>
+      </Point>
+    </Placemark>
+
+  </Document>
+</kml>
