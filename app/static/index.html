@@ -36,6 +36,203 @@
       color: var(--text);
       min-height: 100vh;
       line-height: 1.6;
+    }
+
+    /* Auth View (Full screen centered login / register gate) */
+    #authView {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    .auth-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      padding: 2.25rem;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      background: var(--accent-glow);
+      filter: blur(60px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .auth-brand {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .auth-logo {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 0 25px var(--accent-glow);
+    }
+
+    .auth-brand h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    .auth-brand p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .tab-header {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.5rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.55rem;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 1.1rem;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.75rem 0.9rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #030712;
+      font-weight: 700;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px var(--accent-glow);
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--accent-glow);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-full {
+      width: 100%;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .demo-hint {
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--card-border);
+      text-align: center;
+    }
+
+    .demo-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .demo-btn:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--accent);
+    }
+
+    /* Dashboard Application View */
+    #appView {
+      display: none;
       padding: 2rem 1.5rem 4rem;
     }
 
@@ -77,14 +274,12 @@
       font-size: 1.4rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      background: linear-gradient(to right, #ffffff, #94a3b8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     .nav-links {
       display: flex;
       gap: 0.75rem;
+      align-items: center;
     }
 
     .btn-link {
@@ -142,6 +337,29 @@
       color: var(--text-muted);
       max-width: 800px;
       font-size: 0.95rem;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+    }
+
+    .badge.active {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .grid-2 {
@@ -210,59 +428,6 @@
 
     .file-input {
       display: none;
-    }
-
-    .btn {
-      background: linear-gradient(135deg, #0284c7, #38bdf8);
-      color: #030712;
-      font-weight: 700;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 4px 15px var(--accent-glow);
-      transition: all 0.2s ease;
-      margin-top: 1rem;
-    }
-
-    .btn:hover {
-      opacity: 0.95;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px var(--accent-glow);
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* Quick Info Badge */
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .badge {
-      font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 0.25rem 0.6rem;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-    }
-
-    .badge.active {
-      background: rgba(56, 189, 248, 0.1);
-      border-color: var(--accent);
-      color: var(--accent);
     }
 
     /* Stat Cards */
@@ -417,333 +582,404 @@
       border: 1px solid #ef4444;
       color: #fca5a5;
     }
-
-    /* Modal Backdrop & Container */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 1rem;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal {
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 440px;
-      padding: 2rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .modal-close:hover {
-      color: var(--text);
-    }
-
-    .tab-header {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 0.5rem;
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .tab-btn.active {
-      color: var(--accent);
-    }
-
-    .tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -0.55rem;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--accent);
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-      text-align: left;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 0.35rem;
-    }
-
-    .form-input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 0.65rem 0.9rem;
-      color: var(--text);
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
-    }
-
-    .btn-full {
-      width: 100%;
-      justify-content: center;
-      margin-top: 1.25rem;
-    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="brand-icon">🌐</div>
-        <div>
-          <h1>Geospatial File Measurement API</h1>
-          <p style="font-size: 0.75rem; color: var(--text-muted);">FastAPI • Reprojection Engine • Metric Measurements</p>
-        </div>
+  <!-- ==================== VIEW 1: AUTHENTICATION PAGE (SHOWN FIRST) ==================== -->
+  <section id="authView">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-logo">🌐</div>
+        <h1>Geospatial API Portal</h1>
+        <p>Sign in or register to access the measurement dashboard</p>
       </div>
-      <div class="nav-links">
-        <div id="authNav" style="display: flex; gap: 0.5rem; align-items: center;">
-          <button class="btn-link" onclick="openAuthModal('login')" style="cursor: pointer; background: rgba(56, 189, 248, 0.1); border-color: var(--accent); color: var(--accent);">🔑 Sign In</button>
-          <button class="btn-link" onclick="openAuthModal('register')" style="cursor: pointer;">✨ Register</button>
-        </div>
-        <a href="/docs" target="_blank" class="btn-link">⚡ Swagger UI</a>
-        <a href="/redoc" target="_blank" class="btn-link">📖 ReDoc</a>
-        <a href="https://github.com/Manasamalli06/geospatial-measurement-api" target="_blank" class="btn-link">⭐ GitHub</a>
+
+      <div class="tab-header">
+        <button class="tab-btn active" id="tabLoginBtn" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn" id="tabRegisterBtn" onclick="switchTab('register')">Create Account</button>
       </div>
-    </header>
 
-    <!-- Authentication Modal (Login & Register) -->
-    <div class="modal-backdrop" id="authModal">
-      <div class="modal">
-        <button class="modal-close" onclick="closeAuthModal()">&times;</button>
-        <div class="tab-header">
-          <button class="tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">Sign In</button>
-          <button class="tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">Create Account</button>
+      <div id="authAlert" class="status-alert" style="margin-bottom: 1.25rem;"></div>
+
+      <!-- Sign In Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="loginUser">Username or Email</label>
+          <input type="text" id="loginUser" class="form-input" placeholder="e.g. surveyor_manasa" required>
         </div>
+        <div class="form-group">
+          <label class="form-label" for="loginPass">Password</label>
+          <input type="password" id="loginPass" class="form-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-full" id="loginSubmitBtn">Sign In to Dashboard</button>
+      </form>
 
-        <div id="authAlert" class="status-alert" style="margin-bottom: 1rem;"></div>
+      <!-- Register Form -->
+      <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
+        <div class="form-group">
+          <label class="form-label" for="regName">Full Name</label>
+          <input type="text" id="regName" class="form-input" placeholder="e.g. Manasa">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regUser">Username</label>
+          <input type="text" id="regUser" class="form-input" placeholder="e.g. surveyor_manasa" minlength="3" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regEmail">Email Address</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="manasa@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPass">Password (min 6 characters)</label>
+          <input type="password" id="regPass" class="form-input" placeholder="••••••••" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-full" id="regSubmitBtn">Create Account &amp; Continue</button>
+      </form>
 
-        <!-- Login Form -->
-        <form id="loginForm" onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label class="form-label" for="loginUser">Username or Email</label>
-            <input type="text" id="loginUser" class="form-input" placeholder="e.g. surveyor_john or john@example.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="loginPass">Password</label>
-            <input type="password" id="loginPass" class="form-input" placeholder="••••••••" required>
-          </div>
-          <button type="submit" class="btn btn-full" id="loginSubmitBtn">Sign In</button>
-        </form>
-
-        <!-- Register Form -->
-        <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
-          <div class="form-group">
-            <label class="form-label" for="regName">Full Name</label>
-            <input type="text" id="regName" class="form-input" placeholder="e.g. John Doe">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="regUser">Username</label>
-            <input type="text" id="regUser" class="form-input" placeholder="e.g. surveyor_john" minlength="3" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="regEmail">Email Address</label>
-            <input type="email" id="regEmail" class="form-input" placeholder="john@example.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="regPass">Password (min 6 characters)</label>
-            <input type="password" id="regPass" class="form-input" placeholder="••••••••" minlength="6" required>
-          </div>
-          <button type="submit" class="btn btn-full" id="regSubmitBtn">Create Account</button>
-        </form>
+      <div class="demo-hint">
+        <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Need quick access?</span>
+        <button type="button" class="demo-btn" onclick="quickDemoLogin()">⚡ 1-Click Demo Login</button>
       </div>
     </div>
 
-    <div class="hero-banner">
-      <h2>Transform Coordinates &amp; Measure Features</h2>
-      <p>
-        Upload any ESRI Shapefile (zipped) or Google Earth KML file. The engine identifies feature types, automatically reprojects geographic coordinates (EPSG:4326 degrees) to optimal local UTM metric projections, and calculates precise Areas (m² / hectares / km²) and Lengths (m / km).
-      </p>
-      <div class="badges">
-        <span class="badge active">✓ Auto UTM CRS Reprojection</span>
-        <span class="badge active">✓ Polygon Area (m² &amp; ha)</span>
-        <span class="badge active">✓ LineString Length (m &amp; km)</span>
-        <span class="badge active">✓ Point Graceful Handling</span>
-        <span class="badge active">✓ Shapefile .zip &amp; KML</span>
-      </div>
+    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+      <a href="/docs" target="_blank" class="btn-link">⚡ Swagger UI</a>
+      <a href="/redoc" target="_blank" class="btn-link">📖 ReDoc</a>
+      <a href="https://github.com/Manasamalli06/geospatial-measurement-api" target="_blank" class="btn-link">⭐ GitHub</a>
     </div>
+  </section>
 
-    <div class="grid-2">
-      <!-- Upload Card -->
-      <div class="card">
-        <div class="card-title">📤 Upload Geospatial File</div>
-        <div class="drop-zone" id="dropZone">
-          <div class="drop-zone-icon">📁</div>
-          <h3>Drag &amp; drop Shapefile (.zip) or KML (.kml)</h3>
-          <p>or click to browse from your device</p>
-          <input type="file" id="fileInput" class="file-input" accept=".zip,.kml">
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-          <span id="selectedFileName" style="font-size: 0.85rem; color: var(--text-muted);">No file selected</span>
-          <button class="btn" id="uploadBtn" disabled>
-            <span id="uploadBtnText">Upload &amp; Process</span>
-          </button>
-        </div>
-        <div id="statusAlert" class="status-alert"></div>
 
-        <!-- Sample files quick action section -->
-        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--card-border);">
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
-            🧪 One-Click Test Sample Files
+  <!-- ==================== VIEW 2: MEASUREMENT DASHBOARD (SHOWN AFTER LOGIN) ==================== -->
+  <main id="appView">
+    <div class="container">
+      <header>
+        <div class="brand">
+          <div class="brand-icon">🌐</div>
+          <div>
+            <h1>Geospatial File Measurement API</h1>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">FastAPI • Reprojection Engine • Metric Measurements</p>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
-              <div>
-                <strong style="font-size: 0.82rem;">survey.kml</strong>
-                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Polygon, LineString, Point (Bangalore, WGS84)</span>
+        </div>
+        <div class="nav-links">
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.35rem 0.85rem; border-radius: 10px; font-size: 0.82rem;">
+            <span>👤 <strong id="userDisplayName">User</strong></span>
+            <button onclick="handleLogout()" style="background: transparent; border: none; color: #f87171; font-weight: 700; cursor: pointer; margin-left: 0.25rem;">Sign Out</button>
+          </div>
+          <a href="/docs" target="_blank" class="btn-link">⚡ Swagger UI</a>
+          <a href="/redoc" target="_blank" class="btn-link">📖 ReDoc</a>
+          <a href="https://github.com/Manasamalli06/geospatial-measurement-api" target="_blank" class="btn-link">⭐ GitHub</a>
+        </div>
+      </header>
+
+      <div class="hero-banner">
+        <h2>Transform Coordinates &amp; Measure Features</h2>
+        <p>
+          Upload any ESRI Shapefile (zipped) or Google Earth KML file. The engine identifies feature types, automatically reprojects geographic coordinates (EPSG:4326 degrees) to optimal local UTM metric projections, and calculates precise Areas (m² / hectares / km²) and Lengths (m / km).
+        </p>
+        <div class="badges">
+          <span class="badge active">✓ Auto UTM CRS Reprojection</span>
+          <span class="badge active">✓ Polygon Area (m² &amp; ha)</span>
+          <span class="badge active">✓ LineString Length (m &amp; km)</span>
+          <span class="badge active">✓ Point Graceful Handling</span>
+          <span class="badge active">✓ Shapefile .zip &amp; KML</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Upload Card -->
+        <div class="card">
+          <div class="card-title">📤 Upload Geospatial File</div>
+          <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-icon">📁</div>
+            <h3>Drag &amp; drop Shapefile (.zip) or KML (.kml)</h3>
+            <p>or click to browse from your device</p>
+            <input type="file" id="fileInput" class="file-input" accept=".zip,.kml">
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <span id="selectedFileName" style="font-size: 0.85rem; color: var(--text-muted);">No file selected</span>
+            <button class="btn" id="uploadBtn" disabled>
+              <span id="uploadBtnText">Upload &amp; Process</span>
+            </button>
+          </div>
+          <div id="statusAlert" class="status-alert"></div>
+
+          <!-- Sample files quick action section -->
+          <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--card-border);">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+              🧪 One-Click Test Sample Files
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
+                <div>
+                  <strong style="font-size: 0.82rem;">survey.kml</strong>
+                  <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Polygon, LineString, Point (Bangalore, WGS84)</span>
+                </div>
+                <div style="display: flex; gap: 0.4rem;">
+                  <button class="btn-link" onclick="testSample('survey.kml')" style="cursor: pointer;">⚡ Test Now</button>
+                  <a href="/api/samples/survey.kml" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
+                </div>
               </div>
-              <div style="display: flex; gap: 0.4rem;">
-                <button class="btn-link" onclick="testSample('survey.kml')" style="cursor: pointer;">⚡ Test Now</button>
-                <a href="/api/samples/survey.kml" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
+                <div>
+                  <strong style="font-size: 0.82rem;">parcels.zip</strong>
+                  <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Shapefile: 3 Area Parcels (New York, WGS84)</span>
+                </div>
+                <div style="display: flex; gap: 0.4rem;">
+                  <button class="btn-link" onclick="testSample('parcels.zip')" style="cursor: pointer;">⚡ Test Now</button>
+                  <a href="/api/samples/parcels.zip" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
+                <div>
+                  <strong style="font-size: 0.82rem;">routes.zip</strong>
+                  <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Shapefile: 3 Highway LineStrings (New York, WGS84)</span>
+                </div>
+                <div style="display: flex; gap: 0.4rem;">
+                  <button class="btn-link" onclick="testSample('routes.zip')" style="cursor: pointer;">⚡ Test Now</button>
+                  <a href="/api/samples/routes.zip" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
-              <div>
-                <strong style="font-size: 0.82rem;">parcels.zip</strong>
-                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Shapefile: 3 Area Parcels (New York, WGS84)</span>
-              </div>
-              <div style="display: flex; gap: 0.4rem;">
-                <button class="btn-link" onclick="testSample('parcels.zip')" style="cursor: pointer;">⚡ Test Now</button>
-                <a href="/api/samples/parcels.zip" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
-              </div>
+        <!-- Quick Details Card -->
+        <div class="card">
+          <div class="card-title">ℹ️ File &amp; Projection Summary</div>
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-label">Features</div>
+              <div class="stat-val" id="statFeatures">-</div>
+              <div class="stat-sub" id="statType">-</div>
             </div>
-
-            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--card-border);">
-              <div>
-                <strong style="font-size: 0.82rem;">routes.zip</strong>
-                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Shapefile: 3 Highway LineStrings (New York, WGS84)</span>
-              </div>
-              <div style="display: flex; gap: 0.4rem;">
-                <button class="btn-link" onclick="testSample('routes.zip')" style="cursor: pointer;">⚡ Test Now</button>
-                <a href="/api/samples/routes.zip" download class="btn-link" style="text-decoration: none;">⬇️ Save</a>
-              </div>
+            <div class="stat-box">
+              <div class="stat-label">Source CRS</div>
+              <div class="stat-val" id="statCrs">-</div>
+              <div class="stat-sub" id="statStatus">-</div>
             </div>
           </div>
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-label">Total Area</div>
+              <div class="stat-val" id="statArea">-</div>
+              <div class="stat-sub" id="statAreaSub">-</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Total Length</div>
+              <div class="stat-val" id="statLength">-</div>
+              <div class="stat-sub" id="statLengthSub">-</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Quick Details Card -->
-      <div class="card">
-        <div class="card-title">ℹ️ File &amp; Projection Summary</div>
-        <div class="stats-row">
-          <div class="stat-box">
-            <div class="stat-label">Features</div>
-            <div class="stat-val" id="statFeatures">-</div>
-            <div class="stat-sub" id="statType">-</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Source CRS</div>
-            <div class="stat-val" id="statCrs">-</div>
-            <div class="stat-sub" id="statStatus">-</div>
-          </div>
+      <!-- Measurements Table Card -->
+      <div class="card" id="resultsSection" style="display: none;">
+        <div class="card-title" style="justify-content: space-between;">
+          <span>📐 Feature Measurements</span>
+          <button class="btn-link" id="copyJsonBtn">📋 Copy JSON</button>
         </div>
-        <div class="stats-row">
-          <div class="stat-box">
-            <div class="stat-label">Total Area</div>
-            <div class="stat-val" id="statArea">-</div>
-            <div class="stat-sub" id="statAreaSub">-</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Total Length</div>
-            <div class="stat-val" id="statLength">-</div>
-            <div class="stat-sub" id="statLengthSub">-</div>
-          </div>
+        
+        <div class="table-container">
+          <table id="measurementsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Geometry</th>
+                <th>Measurement</th>
+                <th>Projected CRS Used</th>
+                <th>Secondary Units</th>
+                <th>Properties</th>
+              </tr>
+            </thead>
+            <tbody id="measurementsBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+          <div class="card-title">🔍 Raw API Response (GET /api/files/{id}/measurements/)</div>
+          <div class="code-preview" id="rawJsonPreview"></div>
         </div>
       </div>
+
     </div>
-
-    <!-- Measurements Table Card -->
-    <div class="card" id="resultsSection" style="display: none;">
-      <div class="card-title" style="justify-content: space-between;">
-        <span>📐 Feature Measurements</span>
-        <button class="btn-link" id="copyJsonBtn">📋 Copy JSON</button>
-      </div>
-      
-      <div class="table-container">
-        <table id="measurementsTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Geometry</th>
-              <th>Measurement</th>
-              <th>Projected CRS Used</th>
-              <th>Secondary Units</th>
-              <th>Properties</th>
-            </tr>
-          </thead>
-          <tbody id="measurementsBody">
-            <!-- Dynamically populated -->
-          </tbody>
-        </table>
-      </div>
-
-      <div style="margin-top: 1.5rem;">
-        <div class="card-title">🔍 Raw API Response (GET /api/files/{id}/measurements/)</div>
-        <div class="code-preview" id="rawJsonPreview"></div>
-      </div>
-    </div>
-
-  </div>
+  </main>
 
   <script>
+    // --- Application State & Navigation ---
+    const authView = document.getElementById('authView');
+    const appView = document.getElementById('appView');
+    const userDisplayName = document.getElementById('userDisplayName');
+
+    const tabLoginBtn = document.getElementById('tabLoginBtn');
+    const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const authAlert = document.getElementById('authAlert');
+
+    function checkAuthState() {
+      const token = localStorage.getItem('auth_token');
+      const userStr = localStorage.getItem('auth_user');
+
+      if (token && userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          userDisplayName.textContent = user.username;
+          authView.style.display = 'none';
+          appView.style.display = 'block';
+          return;
+        } catch (_) {}
+      }
+
+      // Not logged in: show Login/Register page first
+      authView.style.display = 'flex';
+      appView.style.display = 'none';
+    }
+
+    function switchTab(tab) {
+      authAlert.style.display = 'none';
+      if (tab === 'login') {
+        tabLoginBtn.classList.add('active');
+        tabRegisterBtn.classList.remove('active');
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+      } else {
+        tabLoginBtn.classList.remove('active');
+        tabRegisterBtn.classList.add('active');
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('loginSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Signing In...';
+      authAlert.style.display = 'none';
+
+      const username_or_email = document.getElementById('loginUser').value.trim();
+      const password = document.getElementById('loginPass').value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username_or_email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Login failed');
+
+        localStorage.setItem('auth_token', data.access_token);
+        localStorage.setItem('auth_user', JSON.stringify(data.user));
+
+        authAlert.className = 'status-alert success';
+        authAlert.textContent = `✓ Welcome back, ${data.user.username}! Loading dashboard...`;
+
+        setTimeout(() => checkAuthState(), 600);
+
+      } catch (err) {
+        authAlert.className = 'status-alert error';
+        authAlert.textContent = `✗ ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign In to Dashboard';
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('regSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Creating Account...';
+      authAlert.style.display = 'none';
+
+      const full_name = document.getElementById('regName').value.trim();
+      const username = document.getElementById('regUser').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPass').value;
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password, full_name })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Registration failed');
+
+        localStorage.setItem('auth_token', data.access_token);
+        localStorage.setItem('auth_user', JSON.stringify(data.user));
+
+        authAlert.className = 'status-alert success';
+        authAlert.textContent = `✓ Account created! Welcome, ${data.user.username}. Loading dashboard...`;
+
+        setTimeout(() => checkAuthState(), 600);
+
+      } catch (err) {
+        authAlert.className = 'status-alert error';
+        authAlert.textContent = `✗ ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account & Continue';
+      }
+    }
+
+    async function quickDemoLogin() {
+      // Creates or logs in a demo user instantly
+      const demoUser = "demo_surveyor";
+      const demoPass = "surveyor123";
+
+      try {
+        // Attempt login
+        let res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username_or_email: demoUser, password: demoPass })
+        });
+
+        if (!res.ok) {
+          // If demo user does not exist yet, register it
+          res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              username: demoUser,
+              email: "demo@geosurvey.com",
+              password: demoPass,
+              full_name: "Demo Surveyor"
+            })
+          });
+        }
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Demo login failed');
+
+        localStorage.setItem('auth_token', data.access_token);
+        localStorage.setItem('auth_user', JSON.stringify(data.user));
+
+        authAlert.className = 'status-alert success';
+        authAlert.textContent = '✓ Logging in with demo account...';
+        setTimeout(() => checkAuthState(), 400);
+
+      } catch (err) {
+        authAlert.className = 'status-alert error';
+        authAlert.textContent = `✗ ${err.message}`;
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+      checkAuthState();
+    }
+
+    // --- Measurement Dashboard Logic ---
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
     const selectedFileName = document.getElementById('selectedFileName');
@@ -761,9 +997,7 @@
     dropZone.addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        setFile(e.target.files[0]);
-      }
+      if (e.target.files.length > 0) setFile(e.target.files[0]);
     });
 
     dropZone.addEventListener('dragover', (e) => {
@@ -776,9 +1010,7 @@
     dropZone.addEventListener('drop', (e) => {
       e.preventDefault();
       dropZone.classList.remove('dragover');
-      if (e.dataTransfer.files.length > 0) {
-        setFile(e.dataTransfer.files[0]);
-      }
+      if (e.dataTransfer.files.length > 0) setFile(e.dataTransfer.files[0]);
     });
 
     function setFile(file) {
@@ -799,25 +1031,24 @@
       formData.append('file', currentFile);
 
       try {
+        const token = localStorage.getItem('auth_token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
         const uploadRes = await fetch('/api/files/', {
           method: 'POST',
+          headers,
           body: formData
         });
 
         const uploadData = await uploadRes.json();
-
-        if (!uploadRes.ok) {
-          throw new Error(uploadData.detail || 'Upload failed');
-        }
+        if (!uploadRes.ok) throw new Error(uploadData.detail || 'Upload failed');
 
         statusAlert.className = 'status-alert success';
         statusAlert.textContent = `✓ Uploaded successfully! File ID: ${uploadData.id} • ${uploadData.feature_count} features processed.`;
 
-        // Fetch detailed measurements
         const measRes = await fetch(`/api/files/${uploadData.id}/measurements/`);
         const measData = await measRes.json();
         latestMeasurements = measData;
-
         renderResults(measData);
 
       } catch (err) {
@@ -856,7 +1087,6 @@
     function renderResults(data) {
       resultsSection.style.display = 'block';
 
-      // Update stat cards
       document.getElementById('statFeatures').textContent = data.feature_count;
       document.getElementById('statType').textContent = `${data.summary.polygon_count} Polygons, ${data.summary.linestring_count} Lines, ${data.summary.point_count} Points`;
       document.getElementById('statCrs').textContent = data.crs;
@@ -876,7 +1106,6 @@
         ? `${data.summary.total_length_km} km` 
         : '0 km';
 
-      // Render table
       measurementsBody.innerHTML = '';
       data.measurements.forEach((item) => {
         const tr = document.createElement('tr');
@@ -924,157 +1153,8 @@
       }
     });
 
-    // --- Authentication Logic ---
-    const authModal = document.getElementById('authModal');
-    const authAlert = document.getElementById('authAlert');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const tabLoginBtn = document.getElementById('tabLoginBtn');
-    const tabRegisterBtn = document.getElementById('tabRegisterBtn');
-    const authNav = document.getElementById('authNav');
-
-    function openAuthModal(tab = 'login') {
-      authModal.classList.add('open');
-      authAlert.style.display = 'none';
-      switchAuthTab(tab);
-    }
-
-    function closeAuthModal() {
-      authModal.classList.remove('open');
-    }
-
-    function switchAuthTab(tab) {
-      authAlert.style.display = 'none';
-      if (tab === 'login') {
-        tabLoginBtn.classList.add('active');
-        tabRegisterBtn.classList.remove('active');
-        loginForm.style.display = 'block';
-        registerForm.style.display = 'none';
-      } else {
-        tabLoginBtn.classList.remove('active');
-        tabRegisterBtn.classList.add('active');
-        loginForm.style.display = 'none';
-        registerForm.style.display = 'block';
-      }
-    }
-
-    async function handleLogin(e) {
-      e.preventDefault();
-      const submitBtn = document.getElementById('loginSubmitBtn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner"></span> Signing In...';
-      authAlert.style.display = 'none';
-
-      const username_or_email = document.getElementById('loginUser').value.trim();
-      const password = document.getElementById('loginPass').value;
-
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username_or_email, password })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.detail || 'Login failed');
-
-        localStorage.setItem('auth_token', data.access_token);
-        localStorage.setItem('auth_user', JSON.stringify(data.user));
-
-        authAlert.className = 'status-alert success';
-        authAlert.textContent = `✓ Welcome back, ${data.user.username}!`;
-        setTimeout(() => {
-          closeAuthModal();
-          updateAuthUI();
-        }, 800);
-
-      } catch (err) {
-        authAlert.className = 'status-alert error';
-        authAlert.textContent = `✗ ${err.message}`;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Sign In';
-      }
-    }
-
-    async function handleRegister(e) {
-      e.preventDefault();
-      const submitBtn = document.getElementById('regSubmitBtn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner"></span> Creating Account...';
-      authAlert.style.display = 'none';
-
-      const full_name = document.getElementById('regName').value.trim();
-      const username = document.getElementById('regUser').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const password = document.getElementById('regPass').value;
-
-      try {
-        const res = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password, full_name })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.detail || 'Registration failed');
-
-        localStorage.setItem('auth_token', data.access_token);
-        localStorage.setItem('auth_user', JSON.stringify(data.user));
-
-        authAlert.className = 'status-alert success';
-        authAlert.textContent = `✓ Account created successfully! Welcome, ${data.user.username}.`;
-        setTimeout(() => {
-          closeAuthModal();
-          updateAuthUI();
-        }, 800);
-
-      } catch (err) {
-        authAlert.className = 'status-alert error';
-        authAlert.textContent = `✗ ${err.message}`;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Create Account';
-      }
-    }
-
-    function handleLogout() {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('auth_user');
-      updateAuthUI();
-    }
-
-    function updateAuthUI() {
-      const token = localStorage.getItem('auth_token');
-      const userStr = localStorage.getItem('auth_user');
-
-      if (token && userStr) {
-        try {
-          const user = JSON.parse(userStr);
-          authNav.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.35rem 0.85rem; border-radius: 10px; font-size: 0.82rem;">
-              <span>👤 <strong>${user.username}</strong></span>
-              <button onclick="handleLogout()" style="background: transparent; border: none; color: #f87171; font-weight: 700; cursor: pointer; margin-left: 0.25rem;">Sign Out</button>
-            </div>
-          `;
-          return;
-        } catch (_) {}
-      }
-
-      authNav.innerHTML = `
-        <button class="btn-link" onclick="openAuthModal('login')" style="cursor: pointer; background: rgba(56, 189, 248, 0.1); border-color: var(--accent); color: var(--accent);">🔑 Sign In</button>
-        <button class="btn-link" onclick="openAuthModal('register')" style="cursor: pointer;">✨ Register</button>
-      `;
-    }
-
-    // Close modal on escape or background click
-    authModal.addEventListener('click', (e) => {
-      if (e.target === authModal) closeAuthModal();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && authModal.classList.contains('open')) closeAuthModal();
-    });
-
-    // Check user auth on load
-    updateAuthUI();
+    // Run auth state check on startup
+    checkAuthState();
   </script>
 </body>
 </html>
