@@ -582,6 +582,90 @@
       border: 1px solid #ef4444;
       color: #fca5a5;
     }
+
+    /* ── Toast Notification (bottom-right) ── */
+    #toastNotification {
+      position: fixed;
+      bottom: 1.75rem;
+      right: 1.75rem;
+      z-index: 9999;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      background: rgba(18, 24, 38, 0.97);
+      border: 1px solid rgba(239, 68, 68, 0.55);
+      border-left: 4px solid #ef4444;
+      border-radius: 14px;
+      padding: 1rem 1.25rem 1rem 1rem;
+      max-width: 340px;
+      box-shadow: 0 16px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      transform: translateY(20px) scale(0.97);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    #toastNotification.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .toast-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    .toast-body {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fca5a5;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-msg {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .toast-link {
+      color: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.78rem;
+      font-family: inherit;
+    }
+
+    .toast-link:hover {
+      color: #7dd3fc;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.2s;
+    }
+
+    .toast-close:hover {
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -847,6 +931,11 @@
       }
     }
 
+    // Attach tab click listeners (fallback for inline onclick)
+    tabLoginBtn.addEventListener('click', () => switchTab('login'));
+    tabRegisterBtn.addEventListener('click', () => switchTab('register'));
+
+
     async function handleLogin(e) {
       e.preventDefault();
       const submitBtn = document.getElementById('loginSubmitBtn');
@@ -874,13 +963,15 @@
 
         setTimeout(() => checkAuthState(), 600);
 
-      } catch (err) {
-        authAlert.className = 'status-alert error';
-        authAlert.textContent = `✗ ${err.message}`;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Sign In to Dashboard';
-      }
+        } catch (err) {
+          console.error('Login error:', err);
+          authAlert.className = 'status-alert error';
+          authAlert.textContent = `✗ ${err.message}`;
+          showToastCustom('Login Failed', err.message);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Sign In to Dashboard';
+        }
     }
 
     async function handleRegister(e) {
@@ -915,6 +1006,9 @@
       } catch (err) {
         authAlert.className = 'status-alert error';
         authAlert.textContent = `✗ ${err.message}`;
+        // Show toast for duplicate registration directing to login
+        showToastCustom('Already Registered', 'This account already exists. Please log in instead.');
+        showToast();
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Create Account & Continue';
@@ -968,6 +1062,50 @@
       localStorage.removeItem('auth_token');
       localStorage.removeItem('auth_user');
       checkAuthState();
+    }
+
+    // ── Toast helpers ──
+    let _toastTimer = null;
+
+    function showToast() {
+      const toast = document.getElementById('toastNotification');
+      clearTimeout(_toastTimer);
+      toast.classList.add('show');
+      // Ensure visibility even if CSS load delayed
+      toast.style.display = 'flex';
+      // Auto-dismiss after 6 s
+      _toastTimer = setTimeout(() => hideToast(), 6000);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('toastNotification');
+      toast.classList.remove('show');
+    }
+
+    function toastGoRegister() {
+      hideToast();
+      switchTab('register');
+    }
+
+    // Show toast with custom title and message (e.g., duplicate registration)
+    function showToastCustom(title, msg) {
+      const toast = document.getElementById('toastNotification');
+      const titleEl = toast.querySelector('.toast-title');
+      const msgEl = toast.querySelector('.toast-msg');
+      const linkEl = toast.querySelector('.toast-link');
+      if (titleEl) titleEl.textContent = title;
+      if (msgEl) msgEl.textContent = msg;
+      if (linkEl) {
+        if (title && title.toLowerCase().includes('already registered')) {
+          linkEl.textContent = 'Log In';
+          linkEl.onclick = () => { hideToast(); switchTab('login'); };
+        } else {
+          // default to register link
+          linkEl.textContent = 'register an account';
+          linkEl.onclick = () => { toastGoRegister(); };
+        }
+      }
+      showToast();
     }
 
     // --- Measurement Dashboard Logic ---
@@ -1146,6 +1284,23 @@
 
     // Run auth state check on startup
     checkAuthState();
+    // DEBUG: show toast on load to verify visibility
+    //showToast();
   </script>
+
+  <!-- ── Toast Notification Element ── -->
+  <div id="toastNotification" role="alert" aria-live="assertive">
+    <span class="toast-icon">⚠️</span>
+    <div class="toast-body">
+      <div class="toast-title">Not Registered</div>
+      <div class="toast-msg">
+        No account found. Please
+        <button class="toast-link" onclick="toastGoRegister()">register an account</button>
+        first to continue.
+      </div>
+    </div>
+    <button class="toast-close" onclick="hideToast()" aria-label="Dismiss">✕</button>
+  </div>
+
 </body>
 </html>
